@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const path = require('path');
+const dbgr = require("debug")("development:server");
 
 const usersRouter = require('./routes/usersRouter');
 const productsRouter = require('./routes/productsRouter');
@@ -22,5 +23,5 @@ app.use('/owners', ownersRouter);
 
 
 app.listen(3000, ()=>{
-    console.log("Server running on http://localhost:3000");
+    dbgr("Server running on http://localhost:3000");
 })
