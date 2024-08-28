@@ -23,8 +23,8 @@ router.get('/cart', isloggedin, async (req,res)=>{
     let user = await userModel
     .findOne({email: req.user.email})
     .populate("cart");
-    
-    res.render("cart", {user} );
+    let success = req.flash("success");
+    res.render("cart", {user, success} );
 });
 
 router.get('/addtocart/:productid', isloggedin, async (req,res)=>{
@@ -35,7 +35,13 @@ router.get('/addtocart/:productid', isloggedin, async (req,res)=>{
     res.redirect("/shop");
 });  
 
-
+router.get('/delete/:productid', isloggedin, async (req,res)=>{
+    let user = await userModel.findOne({email: req.user.email});
+    user.cart.pull(req.params.productid);
+    await user.save();
+    req.flash("success", "Item deleted");
+    res.redirect("/cart");
+});  
 
 
 
