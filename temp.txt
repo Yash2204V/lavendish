@@ -1,0 +1,31 @@
+name "The Daily"
+price 100
+discount 0
+bgcolor "#F8F8F8"
+panelcolor "#E8E8E8"
+textcolor "#717171"
+
+
+name "Pink Attack"
+price 1400
+discount 0
+bgcolor "#F4E0E1"
+panelcolor "#E3C4C6"
+textcolor "#816264"
+
+
+name "Multipurpose Bag"
+price 100
+discount 0
+bgcolor "#DED0BF"
+panelcolor "#C5B095"
+textcolor "#5F4A30"
+
+
+name "Backpack Style"
+price 1100
+discount 0
+bgcolor "#F3F8FB"
+panelcolor "#D3E4EE"
+textcolor "#48606E"
+

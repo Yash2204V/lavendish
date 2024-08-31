@@ -1,28 +1,56 @@
 <%- include('./partials/header') %>
-    <div class="w-full h-screen flex items-start px-20 py-20">
-        <div class="w-[25%] flex h-screen flex-col items-start">
-            <div class="flex flex-col">
-                <a class="block w-fit mb-2" href="">All Products</a>
-                <a class="block w-fit mb-2" href="">Create new product</a>
-            </div>
+
+<% if(success.length>0){ %>
+    <div class="absolute top-5 left-1/2 -translate-x-1/2 -translate-y-1/2 p-3 rounded-md bg-red-500">
+        <span class="inline-block mt-1 mb-1 text-white">
+            <%= success %>
+        </span>
+    </div>
+  <% } %>
+  <div class="w-full h-screen flex items-start px-20 py-20">
+    <!-- Sidebar -->
+    <div class="w-[25%] flex h-screen flex-col items-start">
+        <div class="flex flex-col">
+            <a class="block w-fit mb-2 text-blue-600 hover:underline" href="/owners/myaccount">All Products</a>
+            <a class="block w-fit mb-2 text-blue-600 hover:underline" href="/owners/admin">Create new product</a>
         </div>
-        <div class="w-[75%] flex flex-col gap-5 h-screen">
-            <a class="text-red-500" href="">Delete all</a>
-            <div class="flex flex-wrap gap-4">
-                <div class="w-60 bg-red-500">
-                    <div class="w-full h-52 bg-yellow-500"></div>
-                    <div class="flex justify-between items-center px-4 py-4">
-                        <div>
-                            <h3>Clinge Bag</h3>
-                            <h4>₹ 1200</h4>
+    </div>
+
+    <!-- Main Content -->
+    <div class="w-[75%] flex flex-col gap-5 h-screen">
+        <a class="text-red-500 hover:underline" href="/products/deleteAll">Delete all</a>
+        
+        <!-- Product Grid -->
+        <div class="flex flex-wrap gap-4">
+            <% owner.products.forEach(function(item){ %>
+                <div class="w-[30%] rounded-md overflow-hidden border border-gray-300">
+                    <!-- Product Image -->
+                    <div class="w-full flex justify-center items-center h-80 bg-[<%= item.bgcolor %>]">
+                        <img
+                            class="h-full object-cover"
+                            src="data:image/jpeg;base64,<%= item.image.toString('base64') %>"
+                            alt="<%= item.name %>"
+                        />
+                    </div>
+
+                    <div class="w-full flex justify-between px-5 py-4 bg-[<%= item.panelcolor %>]">
+                        <h3 class="text-2xl font-semibold"><%= item.name %></h3>
+                        <div class="flex items-center gap-2">
+                            <i class="w-7 h-7 bg-white flex rounded-full items-center justify-center ri-subtract-line"></i>
+                            <div class="px-2 py-1 rounded-md bg-white text-black">01</div>
+                            <i class="w-7 h-7 bg-white flex rounded-full items-center justify-center ri-add-line"></i>
                         </div>
-                        <a class="w-7 h-7 flex items-center justify-center rounded-full bg-white" href="">
-                            <i class="ri-add-line"></i>
-                        </a>
+                    </div>
+
+                    <div class="flex text-white items-center justify-between px-5 py-3 bg-[<%= item.textcolor %>]">
+                        <h4 class="text-lg font-medium">Net Total</h4>
+                        <h2 class="text-lg font-bold">₹ <%= item.price + 20 - item.discount %></h2>
                     </div>
                 </div>
-            </div>
-
+            <% }) %>
         </div>
+    </div>
+</div>
+
     </div>
     <%- include('./partials/footer') %>
