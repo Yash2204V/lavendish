@@ -1,30 +1,32 @@
 const express = require("express");
 const router = express.Router();
-const ownerModel = require("../models/owner-model");
+const isloggedowner = require('../middlewares/isLoggedOwner');
+const { registerOwner, loginOwner, logoutOwner } = require("../controllers/authControllerOwner");
 
-if(process.env.NODE_ENV === "development"){
-    router.post('/create', async (req,res)=>{
-        let owners = await ownerModel.find();
-        if(owners.length > 0){
-            return res
-                .status(502) 
-                .send("You don't have permission to create a new owner");
-        }
-        let {fullname, email, password} = req.body;
+router.post('/register', registerOwner);
 
-        let createdOwner = await ownerModel.create({
-            fullname,
-            email,
-            password,
-        });
+router.post('/login', loginOwner);
 
-        res.status(201).send(createdOwner);
-    });
-}
+router.get('/', (req, res) => {
+    let error = req.flash("error");
+    res.render("owner-login", { error, isAdmin: true , loggedin: false});
+});
 
-router.get('/admin', (req, res) => {
-    let success = req.flash("success");
-    res.render("createproducts", {success});
+router.get('/logout', logoutOwner);
+
+router.route('/admin')
+    .post((req, res) => {
+        let success = req.flash("success");
+        res.render("createproducts", {success, loggedin: true, isAdmin: true});
+    })
+    .get(isloggedowner, (req, res) => {
+        let success = req.flash("success");
+        res.render("createproducts", {success, loggedin: true, isAdmin: true});
+    })
+
+router.get("/myaccount", (req, res)=>{
+    res.render("admin", {loggedin: true, isAdmin: true});
 })
+
 
 module.exports = router;
