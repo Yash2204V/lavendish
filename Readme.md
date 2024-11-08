@@ -1,5 +1,5 @@
 ✨ What's Lavendish? An e-commerce platform primarily focused on selling stylish bags! 👜🛍️ A blend of modern tech and best practices to deliver a robust shopping experience. 🌐
-
+[Youtube Link: Lavendish](https://youtu.be/grHTfdDoVyQ?feature=shared)
 Main steps to follow for collaborators:
 1. Clone the repo. 
 2. (VERY IMP.) ⇒ Make your own branch, NEVER MAKE CHANGES IN MAIN BRANCH.
