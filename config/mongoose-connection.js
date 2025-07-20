@@ -2,16 +2,28 @@ const mongoose = require("mongoose");
 // const config = require("config");
 const dbgr = require("debug")("development:mongoose");
 require('dotenv').config(); 
-const MONGODB_URI = `mongodb+srv://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@cluster0.zbg2m.mongodb.net/`;
-mongoose
-// .connect(`${MONGODB_URI}?retryWrites=true&w=majority&appName=Cluster0`)
-.connect('mongodb://127.0.0.1:27017/e-commerce')
-.then(function(){
-    dbgr("Connected to MongoDB");
-    
-})
-.catch(function(err){
-    dbgr(err);
-})
+// const MONGODB_URI = `${process.env.MONGODB_URI}`;
+
+// let connectionInstance = mongoose.connect(MONGODB_URI)
+// .then(function(){
+//     dbgr("Connected to MongoDB");
+// })
+// .catch(function(err){
+//     dbgr(err);
+// })
+
+// console.log(connectionInstance.connection.host);
+
+const connectDB = async () => {
+    try {        
+        const connectionInstance = await mongoose.connect(`${process.env.MONGODB_URI}`)
+        dbgr(`🗃️  MongoDB connected !! DB HOST: ${connectionInstance.connection.host}`);
+    } catch (error) {
+        console.log("MONGODB connection FAILED ", error);
+        process.exit(1)
+    }
+}
+
+connectDB();
 
 module.exports = mongoose.connection;

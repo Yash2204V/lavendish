@@ -15,16 +15,6 @@ router.get('/logout',(req,res) => {
     res.redirect("/");
 });
 
-router.get('/myaccount', (req, res) => {
-    res.render("admin");
-});
-
-router.get('/admin', (req, res) => {
-    res.render("authority");
-});
-
-
-
 router.get('/shop', isloggedin, async (req,res)=>{
     let products = await productModel.find();
     let success = req.flash("success");

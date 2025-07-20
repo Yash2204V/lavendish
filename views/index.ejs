@@ -7,34 +7,39 @@
             </span>
         </div>
         <% } %>
-        <div class="relative">
-            <h1 class="absolute font-bold font-serif text-white text-6xl top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">Bag brings Life</h1>
-            <img class="h-80 w-full object-cover" src="/images/bg.avif" alt="">
-        </div>
+            <div class="relative hidden md:block">
+                <h1
+                    class="absolute font-bold font-serif text-white text-6xl top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+                    Bag brings Life</h1>
+                <img class="h-80 w-full object-cover" src="/images/bg.avif" alt="">
+            </div>
 
-            <div class="w-full h-screen flex px-18">
-                <div class="w-1/2 flex items-center justify-center h-1/2">
-                    <div class="w-full px-32">
-                        <h3 class="text-4xl">Welcome to <span class="text-5xl font-mono font-bold text-violet-700">Lavendish</span></h3>
-
-                        <h4 class="text-2xl mb-5">Create your account</h4>
+            <div class="flex md:flex-row flex-col justify-center items-center gap-10">
+                <div class="w-[700px] h-80 text-black p-10 flex justify-center">
+                    <div class="w-full flex flex-col justify-center items-center">
+                        <h3 class="text-2xl">Welcome to <span
+                                class="text-3xl font-mono font-bold text-violet-700">Lavendish</span></h3>
+                        <h4 class="text-xl mb-5">Create your account</h4>
                         <form autocomplete="off" action="/users/register" method="post">
-                            <input
-                                class="bg-zinc-100 block w-full px-3 py-2 border-[1px] rounded-md mb-3 border-zinc-200"
-                                type="text" placeholder="Full Name" name="fullname">
-                            <input
-                                class="bg-zinc-100 block w-full px-3 py-2 border-[1px] rounded-md mb-3 border-zinc-200"
-                                type="email" placeholder="Email" name="email">
-                            <input
-                                class="bg-zinc-100 block w-full px-3 py-2 border-[1px] rounded-md mb-3 border-zinc-200"
-                                type="password" placeholder="Password" name="password">
-                            <input class="px-5 rounded-full py-3 mt-2 bg-violet-700 text-white" type="submit"
-                                value="Create My Account">
+                            <div class="flex flex-col">
+                                <input
+                                    class="bg-zinc-100 block w-full px-3 py-2 border-[1px] rounded-md mb-3 border-zinc-200"
+                                    type="text" placeholder="Full Name" name="fullname">
+                                <input
+                                    class="bg-zinc-100 block w-full px-3 py-2 border-[1px] rounded-md mb-3 border-zinc-200"
+                                    type="email" placeholder="Email" name="email">
+                                <input
+                                    class="bg-zinc-100 block w-full px-3 py-2 border-[1px] rounded-md mb-3 border-zinc-200"
+                                    type="password" placeholder="Password" name="password">
+                            </div>
+                            <input class="px-5 block rounded-full py-3 mt-2 bg-violet-700 text-white" type="submit"
+                                value="Create">
                         </form>
                     </div>
                 </div>
-                <div class="w-1/2 flex items-center justify-center h-1/2">
-                    <div class="w-full px-32">
+                <div class="w-[700px] h-80 text-black p-10 flex justify-center">
+
+                    <div class="flex flex-col">
                         <h4 class="text-2xl capitalize mb-5">login your account</h4>
                         <form autocomplete="off" action="/users/login" method="post">
                             <input
@@ -45,8 +50,12 @@
                                 type="password" placeholder="Password" name="password">
                             <input class="px-5 block rounded-full py-3 mt-2 bg-violet-700 text-white" type="submit"
                                 value="Login">
+                            <div class="mt-3 p-2 bg-yellow-100 border border-yellow-400 text-yellow-800">Credentials:
+                                demo@lavendish.com/password123</div>
                         </form>
                     </div>
                 </div>
             </div>
+
+
             <%- include('./partials/footer') %>
