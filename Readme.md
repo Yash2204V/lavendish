@@ -22,7 +22,7 @@ Lavendish is a modern e-commerce platform designed for selling stylish bags. It 
 ## 🛠️ Installation
 1. **Clone the repo:**
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/Yash2204V/lavendish.git
    cd lavendish
    ```
 2. **Install dependencies:**
