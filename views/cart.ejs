@@ -64,7 +64,27 @@
       <h3 class="font-semibold text-xl text-green-600">₹ <%= item.price + 20 - item.discount %></h3>
     </div>
     <div class="mt-4 flex items-center">
-      <button class="border bg-black font-semibold p-3 text-white rounded-md hover:cursor-pointer">Order Now</button>
+      <button
+        onclick="(function(type, name) {
+          const whatsappNumber = '+18002428478';
+          const whatsappMessage = `*${type} Inquiry* 📩
+
+          Hello Team,
+          I am interested in the following service:
+
+          ✅ ${name}
+
+          Please share more details about the process, pricing, and availability.
+
+          Thanks & Regards`;
+
+          const encodedMessage = encodeURIComponent(whatsappMessage);
+          const whatsappUrl = `https://api.whatsapp.com/send?phone=${whatsappNumber.replace('+', '')}&text=${encodedMessage}`;
+          window.open(whatsappUrl, '_blank');
+        })('Product', '<%= item.name %>')"
+        class="border bg-black font-semibold p-3 text-white rounded-md hover:cursor-pointer" >
+        Order Now
+      </button>
       <a class="font-sm text-red-500 hover:cursor-pointer px-3" href="/delete/<%= item._id %>">Delete</a>
     </div>
   </div>

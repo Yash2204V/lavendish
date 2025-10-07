@@ -19,7 +19,6 @@
     <!-- Main Content -->
     <div class="w-[75%] flex flex-col gap-5 h-screen">
         <a class="text-red-500 hover:underline" href="/products/deleteAll">Delete all</a>
-        
         <!-- Product Grid -->
         <div class="flex flex-wrap gap-4">
             <% owner.products.forEach(function(item){ %>
@@ -46,6 +45,8 @@
                         <h4 class="text-lg font-medium">Net Total</h4>
                         <h2 class="text-lg font-bold">₹ <%= item.price + 20 - item.discount %></h2>
                     </div>
+                    <a class="font-sm text-red-500 hover:cursor-pointer px-3" href="/delete/<%= item._id %>">Delete</a>
+
                 </div>
             <% }) %>
         </div>
