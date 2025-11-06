@@ -12,6 +12,7 @@ const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/usersRouter');
 const productsRouter = require('./routes/productsRouter');
 const ownersRouter = require('./routes/ownersRouter');
+const adminRouter = require('./routes/admin');
 
 const db = require('./config/mongoose-connection');
 const cookieParser = require("cookie-parser");
@@ -33,6 +34,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/products', productsRouter);
 app.use('/owners', ownersRouter);
+app.use('/admin', adminRouter);
 
 app.listen(PORT, ()=>{
     dbgr(`Server running on http://localhost:${PORT}`);

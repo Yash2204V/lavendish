@@ -4,45 +4,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Lavendish - Premium E-Commerce</title>
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
 <body class="font-['helvetica_now_display']">
-    <nav class="w-full flex justify-between px-5 py-3">
-        <h3 class="text-xl font-mono font-bold text-violet-700">Lavendish</h3>
-        <% var loggedin = typeof loggedin !== "undefined" ? loggedin : true %>
-        <% var isAdmin = typeof isAdmin !== "undefined" ? isAdmin : false %>
-        <% if(loggedin){ %>
-            <% if(!isAdmin){ %>
-            <div class="flex gap-5">
-                <a href="/shop">Shop</a>
-                <a href="/cart">Cart</a>
-                <!-- <a href="">My Account</a> -->
-                <a class="text-red-600" href="users/logout">Logout</a>
-            </div>
-            <% } else { %>
-                <div class="flex gap-5">
-                    <a href="/owners/admin">Create Products</a>
-                    <a href="/owners/myaccount">My Account</a>
-                    <a class="text-red-600" href="/logout">Logout</a>
-                </div>
-            <% } } %>
-        <% if(!loggedin){ %>
-            <% if(!isAdmin){ %>
-            <div>
-                <a class="flex items-center gap-2" href="/owners">
-                    <!-- <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
-                    </svg> -->
-                    <!-- <h4 class="font-sm hover:text-violet-700">Start Selling</h4> -->
+    <% var loggedin = typeof loggedin !== "undefined" ? loggedin : true %>
+    <% var isAdmin = typeof isAdmin !== "undefined" ? isAdmin : false %>
+    
+    <!-- Improved Navigation Bar -->
+    <nav class="w-full bg-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <!-- Logo -->
+                <a href="<%= loggedin ? '/shop' : '/' %>" class="flex items-center gap-2">
+                    <div class="w-10 h-10 bg-gradient-to-r from-violet-600 to-purple-600 rounded-lg flex items-center justify-center">
+                        <i class="ri-shopping-bag-3-fill text-white text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold bg-gradient-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent">Lavendish</h3>
                 </a>
-            </div>
-            <% }else{ %> 
-                <div class="flex gap-5">
-                    <a class="text-red-600" href="/">Return</a>
-                </div>
-           <% } } %>
 
+                <!-- Navigation Links -->
+                <% if(loggedin){ %>
+                    <% if(!isAdmin){ %>
+                        <!-- User Navigation -->
+                        <div class="flex items-center gap-6">
+                            <a href="/shop" class="flex items-center gap-2 hover:text-violet-600 transition font-medium">
+                                <i class="ri-store-2-line"></i>
+                                <span>Shop</span>
+                            </a>
+                            <a href="/cart" class="flex items-center gap-2 hover:text-violet-600 transition font-medium relative">
+                                <i class="ri-shopping-cart-line text-xl"></i>
+                                <span>Cart</span>
+                                <!-- Cart badge can be added here -->
+                            </a>
+                            <a href="/user/dashboard" class="flex items-center gap-2 hover:text-violet-600 transition font-medium">
+                                <i class="ri-dashboard-line"></i>
+                                <span>Dashboard</span>
+                            </a>
+                            <div class="h-6 w-px bg-gray-300"></div>
+                            <a href="/users/logout" class="flex items-center gap-2 text-red-600 hover:text-red-700 transition font-medium">
+                                <i class="ri-logout-box-line"></i>
+                                <span>Logout</span>
+                            </a>
+                        </div>
+                    <% } else { %>
+                        <!-- Admin Navigation -->
+                        <div class="flex items-center gap-6">
+                            <a href="/admin" class="flex items-center gap-2 hover:text-violet-600 transition font-medium">
+                                <i class="ri-dashboard-3-line"></i>
+                                <span>Admin Dashboard</span>
+                            </a>
+                            <a href="/owners/admin" class="flex items-center gap-2 hover:text-violet-600 transition font-medium">
+                                <i class="ri-add-box-line"></i>
+                                <span>Create Product</span>
+                            </a>
+                            <a href="/owners/myaccount" class="flex items-center gap-2 hover:text-violet-600 transition font-medium">
+                                <i class="ri-file-list-3-line"></i>
+                                <span>My Products</span>
+                            </a>
+                            <a href="/shop" class="flex items-center gap-2 hover:text-violet-600 transition font-medium">
+                                <i class="ri-store-2-line"></i>
+                                <span>View Store</span>
+                            </a>
+                            <div class="h-6 w-px bg-gray-300"></div>
+                            <a href="/logout" class="flex items-center gap-2 text-red-600 hover:text-red-700 transition font-medium">
+                                <i class="ri-logout-box-line"></i>
+                                <span>Logout</span>
+                            </a>
+                        </div>
+                    <% } %>
+                <% } else { %>
+                    <!-- Not Logged In -->
+                    <div class="flex items-center gap-4">
+                        <a href="/owners" class="px-4 py-2 text-violet-600 hover:text-violet-700 font-medium transition">
+                            Start Selling
+                        </a>
+                        <a href="/" class="px-6 py-2 bg-violet-600 text-white rounded-lg hover:bg-violet-700 transition font-medium">
+                            Login
+                        </a>
+                    </div>
+                <% } %>
+            </div>
+        </div>
     </nav>

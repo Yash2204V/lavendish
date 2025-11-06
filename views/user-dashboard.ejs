@@ -1,0 +1,161 @@
+<%- include('./partials/header') %>
+
+<div class="min-h-screen bg-gray-50 py-8">
+    <div class="max-w-7xl mx-auto px-6">
+        <!-- Dashboard Header -->
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-900">My Dashboard</h1>
+            <p class="text-gray-600 mt-2">Welcome back! Here's your account overview</p>
+        </div>
+        <!-- Main Content Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Account Information -->
+            <div class="lg:col-span-2 space-y-6">
+                <!-- Profile Card -->
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="text-xl font-bold text-gray-900">Account Information</h2>
+                        <a href="/user/profile/edit" class="text-violet-600 hover:text-violet-700 text-sm font-medium">
+                            Edit Profile
+                        </a>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-4">
+                            <div class="w-16 h-16 bg-gradient-to-r from-violet-600 to-purple-600 rounded-full flex items-center justify-center text-white text-2xl font-bold">
+                                <%= user.fullname ? user.fullname.charAt(0).toUpperCase() : 'U' %>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-900"><%= user.fullname || 'User' %></h3>
+                                <p class="text-gray-600 text-sm"><%= user.email %></p>
+                            </div>
+                        </div>
+                        <div class="border-t pt-4 grid grid-cols-2 gap-4">
+                            <div>
+                                <p class="text-sm text-gray-600">Member Since</p>
+                                <p class="font-medium text-gray-900"><%= user.createdAt ? new Date(user.createdAt).toLocaleDateString() : 'N/A' %></p>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-600">Account Status</p>
+                                <p class="font-medium text-green-600">Active</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cart Preview -->
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <% 
+                    // Calculate cart totals
+                    let totalItems = 0;
+                    let cartTotal = 0;
+                    let hasValidItems = false;
+                    
+                    if (user.cart && Array.isArray(user.cart)) {
+                        user.cart.forEach(cartItem => {
+                            if (!cartItem) return;
+                            const item = cartItem.product || {};
+                            // Only count items with valid product data and quantity > 0
+                            if (item && item._id && cartItem.quantity > 0) {
+                                const quantity = parseInt(cartItem.quantity) || 0;
+                                if (quantity > 0) {
+                                    totalItems += quantity;
+                                    if (typeof item.price === 'number') {
+                                        cartTotal += (item.price - (item.discount || 0)) * quantity;
+                                    }
+                                    hasValidItems = true;
+                                }
+                            }
+                        });
+                    }
+                    %>
+                    
+                    <% if (!hasValidItems) { %>
+                        <div class="text-center py-8">
+                            <i class="ri-shopping-cart-line text-5xl text-gray-300 mb-3"></i>
+                            <p class="text-gray-600">Your cart is empty</p>
+                            <a href="/shop" class="inline-block mt-4 px-6 py-2 bg-violet-600 text-white rounded-lg hover:bg-violet-700 transition">
+                                Start Shopping
+                            </a>
+                        </div>
+                    <% } else { %>
+                        <div class="space-y-4">
+                            <% 
+                            let itemsShown = 0;
+                            user.cart.forEach(function(cartItem, index) { 
+                                if (itemsShown >= 3) return;
+                                if (!cartItem.product) return;
+                                itemsShown++;
+                                const item = cartItem.product;
+                                const quantity = cartItem.quantity || 1;
+                            %>
+                                <div class="flex items-center gap-4 p-3 border rounded-lg hover:bg-gray-50 transition">
+                                    <div class="w-16 h-16 bg-[<%= item.bgcolor || '#f3f4f6' %>] rounded-lg flex items-center justify-center flex-shrink-0">
+                                        <% if (item.image && item.image.toString) { %>
+                                            <img class="h-12 object-contain" src="data:image/jpeg;base64,<%= item.image.toString('base64') %>" alt="<%= item.name %>">
+                                        <% } else { %>
+                                            <i class="ri-shopping-bag-line text-2xl text-gray-400"></i>
+                                        <% } %>
+                                    </div>
+                                    <div class="flex-1">
+                                        <h4 class="font-semibold text-gray-900"><%= item.name %></h4>
+                                        <p class="text-sm text-gray-600">
+                                            ₹<%= (item.price || 0).toFixed(2) %> × <%= quantity %>
+                                            <% if (item.discount && item.discount > 0) { %>
+                                                <span class="text-green-600 ml-2">Save ₹<%= (item.discount * quantity).toFixed(2) %></span>
+                                            <% } %>
+                                        </p>
+                                    </div>
+                                    <a href="/delete/<%= item._id %>" class="text-red-500 hover:text-red-700 p-2">
+                                        <i class="ri-delete-bin-line"></i>
+                                    </a>
+                                </div>
+                            <% }); %>
+                            <% if(totalItems > 3) { %>
+                                <p class="text-sm text-gray-600 text-center">+ <%= totalItems - 3 %> more item<%= (totalItems - 3) !== 1 ? 's' : '' %></p>
+                            <% } %>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+
+            <!-- Quick Actions Sidebar -->
+            <div class="space-y-6">
+                <!-- Quick Actions -->
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h2 class="text-xl font-bold text-gray-900 mb-4">Quick Actions</h2>
+                    <div class="space-y-3">
+                        <a href="/shop" class="flex items-center gap-3 p-3 rounded-lg hover:bg-violet-50 transition group">
+                            <div class="w-10 h-10 bg-violet-100 rounded-lg flex items-center justify-center group-hover:bg-violet-200 transition">
+                                <i class="ri-store-2-line text-violet-600"></i>
+                            </div>
+                            <div>
+                                <p class="font-medium text-gray-900">Browse Products</p>
+                                <p class="text-xs text-gray-600">Explore our collection</p>
+                            </div>
+                        </a>
+                        <button class="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-blue-50 transition group">
+                            <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center group-hover:bg-blue-200 transition">
+                                <i class="ri-settings-3-line text-blue-600"></i>
+                            </div>
+                            <div class="text-left">
+                                <p class="font-medium text-gray-900">Settings</p>
+                                <p class="text-xs text-gray-600">Manage account</p>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Help & Support -->
+                <div class="bg-gradient-to-br from-violet-600 to-purple-600 rounded-lg shadow-md p-6 text-white">
+                    <h2 class="text-xl font-bold mb-2">Need Help?</h2>
+                    <p class="text-sm text-violet-100 mb-4">Our support team is here to assist you</p>
+                    <button class="w-full bg-white text-violet-600 py-2 rounded-lg font-medium hover:bg-gray-100 transition">
+                        Contact Support
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('./partials/footer') %>

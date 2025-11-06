@@ -9,8 +9,15 @@ const userSchema = mongoose.Schema({
     email: String,
     password: String,
     cart: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "product",
+        product: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "product",
+        },
+        quantity: {
+            type: Number,
+            default: 0,
+            min: 0
+        }
     }],
     orders: {
         type: Array,
@@ -18,6 +25,8 @@ const userSchema = mongoose.Schema({
     },
     contact: Number,
     picture: String
+}, {
+    timestamps: true
 });
 
 module.exports = mongoose.model("user", userSchema);

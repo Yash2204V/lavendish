@@ -9,51 +9,111 @@
     <% } %>
     <div class="w-full h-screen flex items-start px-20 py-20">
         <div class="w-[25%] flex h-screen flex-col items-start">
-            <a class="block w-fit mb-2" href="/shop">All Products</a> 
+            <a class="block w-fit mb-2 <%= currentCategory === 'all' ? 'font-bold text-blue-600' : '' %>" href="/shop">All Products</a> 
             <a class="block w-fit mb-2" href="/cart">Cart</a> 
-            <!-- <div class="flex items-center gap-2">
-                <h3>sort by</h3>
-                <form action="/shop">
-                    <select class="border-[1px] px-2 py-1" name="sortby" id="">
-                        <option value="popular">Popular</option>
-                        <option value="newest">Newest</option>
+            
+            <!-- Categories -->
+            <div class="flex flex-col mt-8">
+                <h3 class="font-semibold mb-2">Categories</h3>
+                <% if (categories && categories.length > 0) { %>
+                    <% categories.forEach(cat => { %>
+                        <a class="block w-fit mb-2 capitalize <%= currentCategory === cat._id ? 'font-bold text-blue-600' : '' %>" href="/shop?category=<%= cat._id %>">
+                            <%= cat._id %> (<%= cat.count %>)
+                        </a>
+                    <% }); %>
+                <% } %>
+            </div>
+
+            <!-- Featured Products Link -->
+            <% if (featuredProducts && featuredProducts.length > 0) { %>
+                <div class="flex flex-col mt-8">
+                    <a class="block w-fit mb-2 text-yellow-600 font-semibold" href="/shop?featured=true">⭐ Featured Products</a>
+                </div>
+            <% } %>
+
+            <!-- Sort -->
+            <div class="flex items-center gap-2 mt-8">
+                <h3>Sort by</h3>
+                <form action="/shop" method="GET">
+                    <% if (currentCategory !== 'all') { %>
+                        <input type="hidden" name="category" value="<%= currentCategory %>">
+                    <% } %>
+                    <select class="border-[1px] px-2 py-1" name="sort" onchange="this.form.submit()">
+                        <option value="newest" <%= currentSort === 'newest' ? 'selected' : '' %>>Newest</option>
+                        <option value="price-low" <%= currentSort === 'price-low' ? 'selected' : '' %>>Price: Low to High</option>
+                        <option value="price-high" <%= currentSort === 'price-high' ? 'selected' : '' %>>Price: High to Low</option>
+                        <option value="rating" <%= currentSort === 'rating' ? 'selected' : '' %>>Highest Rated</option>
                     </select>
                 </form>
-            </div> -->
-            <div class="flex flex-col mt-20">
-                <!-- <a class="block w-fit mb-2" href="">New Collection</a> -->
-                <!-- <a class="block w-fit mb-2" href="">All Products</a> -->
-                <!-- <a class="block w-fit mb-2" href="">Discounted Products</a> -->
             </div>
-            <!-- <div class="mt-32">
-                <a class="block w-fit mb-2" href="">Filter by :</a>
-                <a class="block w-fit mb-2" href="">Availability</a>
-                <a class="block w-fit mb-2" href="">Discount</a>
-            </div> -->
         </div>
-        <div class="w-[75%] flex flex-wrap gap-5 h-screen">
-            <div class="flex flex-wrap w-full items-start gap-3">
-                <% products.forEach(function(product){ %>
-                    <div class="w-60">
-                        <div class="w-full h-52 flex  items-center justify-center bg-[<%= product.bgcolor %>]">
-                            <img class="h-[12rem]" src="data:image/jpeg;base64,<%= product.image.toString('base64') %>"
-                                alt="">
-                        </div>
-                        <div
-                            class="flex justify-between bg-[<%= product.panelcolor %>] items-center px-4 py-4 text-[<%= product.textcolor %>]">
-                            <div>
-                                <h3>
-                                    <%= product.name %>
-                                </h3>
-                                <h4>₹ <%= product.price %>
-                                </h4>
+        <div class="w-[75%] flex flex-wrap gap-5 h-screen overflow-y-auto">
+            <!-- Featured Products Section -->
+            <% if (featuredProducts && featuredProducts.length > 0 && currentCategory === 'all') { %>
+                <div class="w-full mb-8">
+                    <h2 class="text-2xl font-bold mb-4 flex items-center">
+                        <span class="mr-2">⭐</span> Featured Products
+                    </h2>
+                    <div class="flex flex-wrap gap-3">
+                        <% featuredProducts.forEach(function(product){ %>
+                            <div class="w-60 border-2 border-yellow-400 rounded-lg overflow-hidden">
+                                <div class="relative w-full h-52 flex items-center justify-center bg-[<%= product.bgcolor %>]">
+                                    <img class="h-[12rem]" src="data:image/jpeg;base64,<%= product.image.toString('base64') %>" alt="">
+                                    <div class="absolute top-2 right-2 bg-yellow-400 text-black text-xs font-bold px-2 py-1 rounded">
+                                        FEATURED
+                                    </div>
+                                </div>
+                                <div class="flex justify-between bg-[<%= product.panelcolor %>] items-center px-4 py-4 text-[<%= product.textcolor %>]">
+                                    <div>
+                                        <h3><%= product.name %></h3>
+                                        <h4>₹ <%= product.price %></h4>
+                                    </div>
+                                    <a class="w-7 h-7 flex items-center justify-center rounded-full bg-white" href="/addtocart/<%= product._id %>">
+                                        <i class="ri-add-line"></i>
+                                    </a>
+                                </div>
                             </div>
-                            <a class="w-7 h-7 flex items-center justify-center rounded-full bg-white" href="/addtocart/<%= product._id %>">
-                                <i class="ri-add-line"></i>
-                            </a>
-                        </div>
+                        <% }) %>
                     </div>
+                </div>
+            <% } %>
+
+            <!-- All Products -->
+            <div class="w-full">
+                <h2 class="text-xl font-semibold mb-4">All Products (<%= products.length %>)</h2>
+                <div class="flex flex-wrap gap-3">
+                    <% products.forEach(function(product){ %>
+                        <div class="w-60">
+                            <div class="relative w-full h-52 flex items-center justify-center bg-[<%= product.bgcolor %>]">
+                                <img class="h-[12rem]" src="data:image/jpeg;base64,<%= product.image.toString('base64') %>" alt="">
+                                <% if (product.featured) { %>
+                                    <div class="absolute top-2 right-2 bg-yellow-400 text-black text-xs font-bold px-2 py-1 rounded">
+                                        ⭐
+                                    </div>
+                                <% } %>
+                                <% if (product.discount > 0) { %>
+                                    <div class="absolute top-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
+                                        -<%= product.discount %>%
+                                    </div>
+                                <% } %>
+                            </div>
+                            <div class="flex justify-between bg-[<%= product.panelcolor %>] items-center px-4 py-4 text-[<%= product.textcolor %>]">
+                                <div>
+                                    <h3><%= product.name %></h3>
+                                    <% if (product.discount > 0) { %>
+                                        <h4 class="line-through text-sm opacity-60">₹ <%= product.price %></h4>
+                                        <h4 class="font-bold">₹ <%= (product.price * (1 - product.discount/100)).toFixed(2) %></h4>
+                                    <% } else { %>
+                                        <h4>₹ <%= product.price %></h4>
+                                    <% } %>
+                                </div>
+                                <a class="w-7 h-7 flex items-center justify-center rounded-full bg-white" href="/addtocart/<%= product._id %>">
+                                    <i class="ri-add-line"></i>
+                                </a>
+                            </div>
+                        </div>
                     <% }) %>
+                </div>
             </div>
         </div>
     </div>

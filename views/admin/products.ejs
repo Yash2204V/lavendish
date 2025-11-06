@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title || 'Manage Products' %></title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <div class="flex h-screen overflow-hidden">
+        <!-- Sidebar -->
+        <div class="hidden md:flex md:flex-shrink-0">
+            <div class="flex flex-col w-64 bg-gray-900">
+                <div class="flex-1 flex flex-col pt-5 pb-4 overflow-y-auto">
+                    <div class="flex items-center flex-shrink-0 px-4 mb-8">
+                        <h1 class="text-white text-2xl font-bold">Admin Panel</h1>
+                    </div>
+                    <nav class="mt-5 flex-1 px-2 space-y-2">
+                        <a href="/admin" class="<%= path === 'dashboard' ? 'bg-gray-800 text-white' : 'text-gray-300 hover:bg-gray-800 hover:text-white' %> group flex items-center px-3 py-3 text-sm font-medium rounded-lg transition">
+                            <i class="ri-dashboard-line mr-3 text-xl"></i>
+                            Dashboard
+                        </a>
+                        <a href="/admin/products" class="<%= path === 'products' ? 'bg-gray-800 text-white' : 'text-gray-300 hover:bg-gray-800 hover:text-white' %> group flex items-center px-3 py-3 text-sm font-medium rounded-lg transition">
+                            <i class="ri-box-3-line mr-3 text-xl"></i>
+                            Products
+                        </a>
+                        <a href="/admin/users" class="<%= path === 'users' ? 'bg-gray-800 text-white' : 'text-gray-300 hover:bg-gray-800 hover:text-white' %> group flex items-center px-3 py-3 text-sm font-medium rounded-lg transition">
+                            <i class="ri-user-line mr-3 text-xl"></i>
+                            Users
+                        </a>
+                        <a href="/shop" class="text-gray-300 hover:bg-gray-800 hover:text-white group flex items-center px-3 py-3 text-sm font-medium rounded-lg transition">
+                            <i class="ri-store-line mr-3 text-xl"></i>
+                            View Store
+                        </a>
+                    </nav>
+                </div>
+                <div class="flex-shrink-0 flex bg-gray-800 p-4">
+                    <div class="flex-shrink-0 w-full group block">
+                        <div class="flex items-center">
+                            <div class="bg-indigo-600 rounded-full h-10 w-10 flex items-center justify-center text-white font-bold">
+                                A
+                            </div>
+                            <div class="ml-3">
+                                <p class="text-sm font-medium text-white">Admin User</p>
+                                <a href="/logout" class="text-xs font-medium text-gray-400 hover:text-white">Logout</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main content -->
+        <div class="flex-1 overflow-auto focus:outline-none">
+            <!-- Top bar -->
+            <div class="relative z-10 flex-shrink-0 flex h-16 bg-white shadow">
+                <div class="flex-1 px-4 flex justify-between items-center">
+                    <h2 class="text-2xl font-bold text-gray-900"><%= title %></h2>
+                    <a href="/owners/admin" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700">
+                        <i class="ri-add-line mr-2"></i>
+                        Add Product
+                    </a>
+                </div>
+            </div>
+
+            <!-- Page content -->
+            <main class="flex-1 relative overflow-y-auto focus:outline-none">
+                <div class="py-6">
+                    <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+                        <!-- Products Table -->
+                        <div class="bg-white shadow-lg rounded-xl overflow-hidden">
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full divide-y divide-gray-200">
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product</th>
+                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
+                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
+                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Discount</th>
+                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Stock</th>
+                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                            <th scope="col" class="relative px-6 py-3"><span class="sr-only">Actions</span></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="bg-white divide-y divide-gray-200">
+                                        <% if (products && products.length > 0) { %>
+                                            <% products.forEach(product => { %>
+                                                <tr class="hover:bg-gray-50">
+                                                    <td class="px-6 py-4 whitespace-nowrap">
+                                                        <div class="flex items-center">
+                                                            <div class="flex-shrink-0 h-12 w-12">
+                                                                <img class="h-12 w-12 rounded object-cover" src="data:image/jpeg;base64,<%= product.image.toString('base64') %>" alt="<%= product.name %>">
+                                                            </div>
+                                                            <div class="ml-4">
+                                                                <div class="text-sm font-medium text-gray-900"><%= product.name %></div>
+                                                                <% if (product.description) { %>
+                                                                    <div class="text-sm text-gray-500 truncate max-w-xs"><%= product.description.substring(0, 50) %>...</div>
+                                                                <% } %>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap">
+                                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                                                            <%= product.category || 'general' %>
+                                                        </span>
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                                        ₹<%= product.price %>
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                                        <% if (product.discount > 0) { %>
+                                                            <span class="text-green-600 font-medium"><%= product.discount %>%</span>
+                                                        <% } else { %>
+                                                            <span class="text-gray-400">-</span>
+                                                        <% } %>
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                                        <% if (product.stock > 0) { %>
+                                                            <span class="text-green-600"><%= product.stock %></span>
+                                                        <% } else { %>
+                                                            <span class="text-red-600">Out of stock</span>
+                                                        <% } %>
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap">
+                                                        <% if (product.featured) { %>
+                                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                                                ⭐ Featured
+                                                            </span>
+                                                        <% } else { %>
+                                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
+                                                                Regular
+                                                            </span>
+                                                        <% } %>
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                                        <button onclick="toggleFeatured('<%= product._id %>', <%= product.featured %>)" class="text-yellow-600 hover:text-yellow-900 mr-3">
+                                                            <i class="ri-star-line"></i>
+                                                        </button>
+                                                        <a href="/products/delete/<%= product._id %>" class="text-red-600 hover:text-red-900" onclick="return confirm('Are you sure you want to delete this product?')">
+                                                            <i class="ri-delete-bin-line"></i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            <% }); %>
+                                        <% } else { %>
+                                            <tr>
+                                                <td colspan="7" class="px-6 py-12 text-center">
+                                                    <div class="flex flex-col items-center">
+                                                        <i class="ri-box-3-line text-6xl text-gray-300 mb-4"></i>
+                                                        <h3 class="text-lg font-medium text-gray-900 mb-2">No products found</h3>
+                                                        <p class="text-sm text-gray-500 mb-4">Get started by creating your first product</p>
+                                                        <a href="/owners/admin" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700">
+                                                            <i class="ri-add-line mr-2"></i>
+                                                            Add Product
+                                                        </a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        <% } %>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        async function toggleFeatured(productId, currentStatus) {
+            try {
+                const response = await fetch(`/admin/products/${productId}/featured`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ featured: !currentStatus })
+                });
+
+                if (response.ok) {
+                    location.reload();
+                } else {
+                    alert('Error updating product status');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error updating product status');
+            }
+        }
+    </script>
+</body>
+</html>
